@@ -87,16 +87,66 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+
+    visited = []
+    fringe = util.Stack()
+    # Takes a (actions, node)
+    fringe.push(([], problem.getStartState()))
+    while not fringe.isEmpty():
+        actions, node = fringe.pop()
+        if problem.isGoalState(node):
+            return actions
+        if node not in visited:
+            visited.append(node)
+            for successor in problem.getSuccessors(node):
+                child_node = successor[0]
+                action = successor[1]
+                fringe.push((actions + [action], child_node))
+    
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+
+    # Only by changing our data structure from stack to queue I have change DFS to BFS! EZ?
+    visited = []
+    fringe = util.Queue()
+    # Takes a (actions, node)
+    fringe.push(([], problem.getStartState()))
+    while not fringe.isEmpty():
+        actions, node = fringe.pop()
+        if problem.isGoalState(node):
+            return actions
+        if node not in visited:
+            visited.append(node)
+            for successor in problem.getSuccessors(node):
+                child_node = successor[0]
+                action = successor[1]
+                fringe.push((actions + [action], child_node))
+
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
+    visited = []
+    fringe = util.PriorityQueue()
+    # Takes a ((actions, node), priority)
+    fringe.push(([], problem.getStartState()), problem.getCostOfActions([]))
+    while not fringe.isEmpty():
+        actions, node = fringe.pop()
+        if problem.isGoalState(node):
+            return actions
+        if node not in visited:
+            visited.append(node)
+            for successor in problem.getSuccessors(node):
+                child_node = successor[0]
+                action = successor[1]
+                child_cost = successor[2]
+                fringe.push((actions + [action], child_node), problem.getCostOfActions(actions))
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
