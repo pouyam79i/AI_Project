@@ -255,10 +255,19 @@ def manhattanHeuristic(position, problem, info={}):
     
     "*** YOUR CODE HERE ***"
 
+    x1, y1 = position[0], position[1]
+    x2, y2 = problem.goal[0], problem.goal[1]
+    return (abs(x1 - x2) + abs(y1 - y2))
+    
+from math import sqrt
 def euclideanHeuristic(position, problem, info={}):
     "The Euclidean distance heuristic for a PositionSearchProblem"
     
     "*** YOUR CODE HERE ***"
+
+    x1, y1 = position[0], position[1]
+    x2, y2 = problem.goal[0], problem.goal[1]
+    return sqrt(pow((x1 - x2), 2) + pow((y1 - y2), 2))
 
 #####################################################
 # This portion is incomplete.  Time to write code!  #
