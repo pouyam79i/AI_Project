@@ -387,6 +387,18 @@ def cornersHeuristic(state, problem):
 
     "*** YOUR CODE HERE ***"
 
+    current_state = state[0]
+    visited_corners = state[1]
+    unvisited_corners = list(set(corners) - set(visited_corners))
+    cost = 0
+
+    # Finding the min of pathing through all corners!
+    while len(unvisited_corners) > 0:
+        h_cost, next = min([(util.manhattanDistance(current_state, corner), corner) for corner in unvisited_corners])
+        current_state = next
+        cost = cost + h_cost
+        unvisited_corners.remove(next)
+    return cost
     
 
     return 0 # Default to trivial solution
