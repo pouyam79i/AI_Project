@@ -538,7 +538,43 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # return search.bfs(problem)
+
+        actions = []
+
+        # Recursive DFS
+        def DFS(startPosition, problem ,limit, visited):
+            if problem.isGoalState(startPosition):
+                return [], True
+            if limit <= 0 or startPosition in visited:
+                return [], False
+            visited.append(startPosition)
+            for s in problem.getSuccessors(startPosition):
+                child_node = s[0]
+                needed_action = s[1]
+                action, ok = DFS(child_node, problem, limit - 1, visited)
+                if ok:
+                    action = [needed_action] + action
+                    return action, True
+            return [], False
+
+        # Itrative DFS
+        def IDFS(startPosition ,problem, max_depth):
+            for limit in range(max_depth + 1):
+                visited = []
+                action, ok = DFS(startPosition, problem, limit, visited)
+                if ok:
+                    return True, action
+
+        # Tring to find a path
+        ok, action = IDFS(startPosition, problem, 100)
+        if ok:
+            actions = action
+
+        return actions
+
+        # util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -574,6 +610,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        return self.food[x][y]
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
