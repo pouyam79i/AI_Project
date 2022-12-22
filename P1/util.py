@@ -167,8 +167,6 @@ class Queue:
         "Returns true if the queue is empty"
         return len(self.list) == 0
 
-# Adding a debuger to handle debugging messages!
-from debugger import MyDebugger
 class PriorityQueue:
     """
       Implements a priority queue data structure. Each inserted item
@@ -195,18 +193,12 @@ class PriorityQueue:
     def update(self, item, priority):
 
         "*** YOUR CODE HERE ***"
-        debugger = MyDebugger()
-        debugger.set_defalt_location(debug_location="update - PriorityQueue - util.py")
 
         for i in range(len(self.heap)):
             if self.heap[i][2] == item:
-                debugger.flag(debug_msg="item exist in heap is {} equal to item {}".format(self.heap[i][2], item))
-                
                 # If item already in priority queue with equal or lower priority, do nothing.
                 if self.heap[i][0] <= priority:
-                    debugger.flag(debug_msg="exist with a lower priority -> do nothing")
                     return
-
                 # If item already in priority queue with higher priority, update its priority and rebuild the heap.
                 else:
                     debugger.flag(debug_msg="exist with higher priority -> updating heap")
@@ -214,8 +206,7 @@ class PriorityQueue:
                     heapq.heapify(self.heap)
                     return
 
-        # If item not in priority queue, do the same thing as self.push.
-        debugger.flag(debug_msg="does not exist -> push")
+
         self.push(item=item, priority=priority)
 
 class PriorityQueueWithFunction(PriorityQueue):

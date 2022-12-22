@@ -144,7 +144,8 @@ def uniformCostSearch(problem):
             for successor in problem.getSuccessors(node):
                 child_node = successor[0]
                 action = successor[1]
-                fringe.push((actions + [action], child_node), problem.getCostOfActions(actions))
+                new_action = actions + [action]
+                fringe.push((new_action, child_node), problem.getCostOfActions(new_action))
 
     util.raiseNotDefined()
 
@@ -172,10 +173,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             for successor in problem.getSuccessors(node):
                 child_node = successor[0]
                 action = successor[1]
-                fringe.push((actions + [action], child_node), problem.getCostOfActions(actions) + heuristic(child_node, problem))
+                new_actions = actions + [action]
+                fringe.push((new_actions, child_node), problem.getCostOfActions(new_actions) + heuristic(child_node, problem))
 
     util.raiseNotDefined()
-
 
 # Abbreviations
 bfs = breadthFirstSearch
