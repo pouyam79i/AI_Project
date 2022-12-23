@@ -272,6 +272,48 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
+        
+        agent_numbers = gameState.getNumAgents()
+        
+        def maxVal(depth, gameState):
+            depth -= 1
+            if depth == 0 or gameState.isLose() or gameState.isWin():
+                return self.evaluationFunction(gameState)
+            max_value = float('-inf')
+            for action in gameState.getLegalActions(0):
+                max_value = max(max_value, chanseVal(depth, 1, gameState.generateSuccessor(0, action)))
+            return max_value
+
+        def chanseVal(depth, agentIndex, gameState):
+            if gameState.isLose() or gameState.isWin():
+                return self.evaluationFunction(gameState)
+
+            if not gameState.getLegalActions(agentIndex):
+                return self.evaluationFunction(gameState)
+            
+            chanse_val = 0
+            legal_action_number = len(gameState.getLegalActions(agentIndex))
+            for action in gameState.getLegalActions(agentIndex):
+                if agentIndex < (agent_numbers - 1):
+                    # Check next ghost if there is still one left
+                    chanse_val += chanseVal(depth, agentIndex + 1, gameState.generateSuccessor(agentIndex, action))
+                else:
+                    # Next move blongs to pacman
+                    chanse_val += maxVal(depth, gameState.generateSuccessor(agentIndex, action))
+            chanse_val = chanse_val / legal_action_number
+            return chanse_val
+
+        # root is here (pacman chooses)
+        max_value = float('-inf')
+        result = Directions.STOP
+        for action in gameState.getLegalActions(0):
+            value = chanseVal(self.depth, 1, gameState.generateSuccessor(0, action))
+            if value > max_value:
+                max_value = value
+                result = action
+
+        return result
+        
         util.raiseNotDefined()
 
 def betterEvaluationFunction(currentGameState):
